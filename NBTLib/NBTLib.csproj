@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NBTEx.cs" />
     <Compile Include="NBTReader.cs" />
     <Compile Include="NBTWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

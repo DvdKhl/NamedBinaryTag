@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace NBTLib {
-	public class NBTReader {
+	public class NBTReader : IDisposable {
 		public Stream BaseStream { get; private set; }
 
 		public NBTReader(Stream stream) {
@@ -28,7 +28,7 @@ namespace NBTLib {
 
 			int length;
 			switch(Type & (NBTType)0x0F) {
-				case NBTType.Byte: Value = BaseStream.ReadByte(); break;
+				case NBTType.Byte: Value = (byte)BaseStream.ReadByte(); break;
 				case NBTType.Short: Value = ReadShort(); break;
 				case NBTType.Int: Value = ReadInt(); break;
 				case NBTType.Long: Value = ReadLong(); break;
@@ -36,6 +36,7 @@ namespace NBTLib {
 				case NBTType.Double: Value = ReadDouble(); break;
 				case NBTType.Binary: Value = ReadBinary(); break;
 				case NBTType.String: Value = ReadString(); break;
+				case NBTType.IntArray: Value = ReadIntArray(); break;
 				case (NBTType)9:
 					var listType = (NBTType)BaseStream.ReadByte();
 					if((int)listType == -1) throw new InvalidOperationException();
@@ -44,7 +45,7 @@ namespace NBTLib {
 					length = (int)((temp[0] << 24) | (temp[0] << 16) | (temp[0] << 8) | temp[3]);
 
 					switch(listType) {
-						case NBTType.End: break;
+						case NBTType.End: Value = 0; break;
 						case NBTType.Short:
 							var shorts = new short[length];
 							for(int i = 0; i < length; i++) shorts[i] = ReadShort();
@@ -106,7 +107,7 @@ namespace NBTLib {
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private int ReadInt() {
 			BaseStream.Read(temp, 0, 4);
-			return (int)((temp[0] << 24) | (temp[0] << 16) | (temp[0] << 8) | temp[3]);
+			return (int)((temp[0] << 24) | (temp[1] << 16) | (temp[2] << 8) | temp[3]);
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -134,7 +135,7 @@ namespace NBTLib {
 		private byte[] ReadBinary() {
 			int length;
 			BaseStream.Read(temp, 0, 4);
-			length = (int)((temp[0] << 24) | (temp[0] << 16) | (temp[0] << 8) | temp[3]);
+			length = (int)((temp[0] << 24) | (temp[1] << 16) | (temp[2] << 8) | temp[3]);
 			var b = new byte[length];
 			BaseStream.Read(b, 0, length);
 			return b;
@@ -148,6 +149,39 @@ namespace NBTLib {
 			return Encoding.UTF8.GetString(bStr);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private int[] ReadIntArray() {
+			int length;
+			BaseStream.Read(temp, 0, 4);
+			length = (int)((temp[0] << 24) | (temp[1] << 16) | (temp[2] << 8) | temp[3]);
+
+			var b = new byte[length * 4];
+			BaseStream.Read(b, 0, b.Length);
+
+			if(BitConverter.IsLittleEndian) Array.Reverse(b);
+			var intArray = new int[length];
+			for(int i = 0; i < length; i++) {
+				intArray[length - i - 1] = BitConverter.ToInt32(b, i << 2);
+			}
+
+			return intArray;
+		}
+
+		private bool disposed;
+		public void Dispose() {
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+		protected virtual void Dispose(bool disposing) {
+			if(!disposed) {
+				disposed = true;
+				if(BaseStream != null) BaseStream.Dispose();
+			}
+		}
 	}
-	public enum NBTType { End = 0, Byte = 1, Short = 2, Int = 3, Long = 4, Float = 5, Double = 6, Binary = 7, String = 8, Compound = 10, List = 16 }
+
+	public enum NBTType {
+		End = 0, Byte = 1, Short = 2, Int = 3, Long = 4, Float = 5, Double = 6, Binary = 7, String = 8, Compound = 10, IntArray = 11,
+		List = 16, ShortList = 18, IntList = 19, LongList = 20, FloatList = 21, DoubleList = 22, BinaryList = 23, StringList = 24, CompoundList = 26
+	}
 }

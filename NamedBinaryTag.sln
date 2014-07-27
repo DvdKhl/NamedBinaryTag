@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBTLib", "NBTLib\NBTLib.csproj", "{055406DD-F667-438C-B706-288C49AB3E28}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBTLibExamples", "NBTLibExamples\NBTLibExamples.csproj", "{0BADFB1A-2AFA-4D8A-ABC0-EDA413F80922}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{055406DD-F667-438C-B706-288C49AB3E28}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{055406DD-F667-438C-B706-288C49AB3E28}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{055406DD-F667-438C-B706-288C49AB3E28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BADFB1A-2AFA-4D8A-ABC0-EDA413F80922}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BADFB1A-2AFA-4D8A-ABC0-EDA413F80922}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BADFB1A-2AFA-4D8A-ABC0-EDA413F80922}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BADFB1A-2AFA-4D8A-ABC0-EDA413F80922}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
