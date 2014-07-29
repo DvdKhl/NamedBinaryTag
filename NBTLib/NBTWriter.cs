@@ -139,15 +139,15 @@ namespace NBTLib {
 			foreach(var value in values) WriteValue(value);
 		}
 		public void Write(string name, float[] values) {
-			WriteListHeader(name, 4, values.Length);
+			WriteListHeader(name, 5, values.Length);
 			foreach(var value in values) WriteValue(value);
 		}
 		public void Write(string name, double[] values) {
-			WriteListHeader(name, 4, values.Length);
+			WriteListHeader(name, 6, values.Length);
 			foreach(var value in values) WriteValue(value);
 		}
 		public void Write(string name, string[] values) {
-			WriteListHeader(name, 4, values.Length);
+			WriteListHeader(name, 8, values.Length);
 			foreach(var value in values) WriteValue(value);
 		}
 		public void Write(string name, int length, Action<NBTWriter, int> onCompound) {

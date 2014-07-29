@@ -83,5 +83,7 @@ namespace NBTLib {
 		public string Name;
 		public NBTType Type;
 		public object Value;
+
+		public override string ToString() { return Name + " = (" + Type + ")" + Value; }
 	}
 }
