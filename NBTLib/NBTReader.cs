@@ -113,8 +113,8 @@ namespace NBTLib {
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private long ReadLong() {
 			BaseStream.Read(temp, 0, 8);
-			return ((long)temp[0] << 56) | ((long)temp[0] << 48) | ((long)temp[0] << 40) | ((long)temp[0] << 32) |
-				((long)temp[0] << 24) | ((long)temp[0] << 16) | ((long)temp[0] << 8) | (long)temp[3];
+			return ((long)temp[0] << 56) | ((long)temp[1] << 48) | ((long)temp[2] << 40) | ((long)temp[3] << 32) |
+				((long)temp[4] << 24) | ((long)temp[5] << 16) | ((long)temp[6] << 8) | (long)temp[7];
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
